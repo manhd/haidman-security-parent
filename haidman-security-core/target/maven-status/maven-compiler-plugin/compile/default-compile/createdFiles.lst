@@ -1,6 +1,0 @@
-com\haidm\security\config\ReoladMessageConfig.class
-com\haidm\security\config\SpringSecurityConfig.class
-com\haidm\security\controller\CustomLoginController.class
-com\haidm\security\properites\SecurityProperites.class
-META-INF\spring-configuration-metadata.json
-com\haidm\security\properites\AuthenticationProperties.class
