@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "haidman.security",
+      "type": "com.haidm.security.properites.SecurityProperites",
+      "sourceType": "com.haidm.security.properites.SecurityProperites"
+    }
+  ],
+  "properties": [
+    {
+      "name": "haidman.security.authentication",
+      "type": "com.haidm.security.properites.AuthenticationProperties",
+      "sourceType": "com.haidm.security.properites.SecurityProperites"
+    }
+  ],
+  "hints": []
+}
