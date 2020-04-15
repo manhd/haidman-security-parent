@@ -8,8 +8,6 @@
     <artifactId>haidman-security-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>haidman-security-base</module>
-        <module>haidman-security-core</module>
         <module>haidman-security-web</module>
     </modules>
     <!--打包方式-->
@@ -104,6 +102,9 @@
                 </configuration>
             </plugin>
         </plugins>
+
+
+
     </build>
 
 

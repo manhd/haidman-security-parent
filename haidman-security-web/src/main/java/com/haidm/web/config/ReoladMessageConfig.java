@@ -1,9 +1,12 @@
-package com.haidm.security.config;
+package com.haidm.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
+/**
+ * @author shs-xxaqbzymhd
+ */
 @Configuration
 public class ReoladMessageConfig {
 

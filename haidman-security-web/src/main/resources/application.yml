@@ -1,8 +1,13 @@
 server:
-  port: 80
+  port: 8008
 spring:
   thymeleaf:
     cache: false #关闭 thymeleaf 缓存
+  datasource:
+    username: root
+    password: Mysql147.@
+    url: jdbc:mysql://49.235.27.226:3339/study-security?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 haidman:
   security:
@@ -15,3 +20,4 @@ haidman:
         - /dist/**
         - /modules/**
         - /plugins/**
+      loginType: REDIRECT #请求认证成功后响应类型
