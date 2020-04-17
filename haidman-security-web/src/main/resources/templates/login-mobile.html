@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>梦学谷-统一权限管理系统</title>
+  <title>HaidMan-统一权限管理系统</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -21,7 +21,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#">梦学谷统一权限管理</a>
+    <a href="#">HaidMan统一权限管理</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -116,7 +116,9 @@
         }
         var url = $(this).attr("code_url") + mobile;
         $.get(url, function(data){
-            alert(data.code === 200 ? "发送成功": "发送失败");
+            alert(data.respCode === 0 ? "发送成功": "发送失败");
+            alert("本次验证码为:"+data.respInfo);
+            console.log("本次验证码为:"+data.respInfo);
         });
     });
 

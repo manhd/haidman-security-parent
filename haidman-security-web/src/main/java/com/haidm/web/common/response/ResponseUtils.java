@@ -90,17 +90,4 @@ public class ResponseUtils {
                 .build();
     }
 
-    /**
-     * 响应成功 自定义 返回信息 返回-无数据
-     * @return
-     */
-    public static  BaseRespose makeToResp(String respMsg){
-        return new BaseRespose.BaseResposeBuilder()
-                .respCode(ResponseEnum.SUCCESS.getRespCode())
-                .respMsg(respMsg)
-                .build();
-    }
-
-
-
 }

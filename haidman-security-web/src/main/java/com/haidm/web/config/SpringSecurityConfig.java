@@ -1,6 +1,7 @@
 package com.haidm.web.config;
 
 import com.haidm.web.authentication.code.ImageCodeValidateFilter;
+import com.haidm.web.authentication.code.MobileValidateFilter;
 import com.haidm.web.properites.SecurityProperites;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private ImageCodeValidateFilter imageCodeValidateFilter;
 
     @Autowired
+    private MobileValidateFilter mobileValidateFilter;
+
+    @Autowired
+    private MobileAuthenticationConfig mobileAuthenticationConfig;
+
+    @Autowired
     private DataSource dataSource;
 
 
@@ -92,7 +99,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic()//采用 HttpBaseic 认证方式
-        http     // 添加过滤器   图形验证码过滤器 在 用户请求 认证之前
+        http
+                .addFilterBefore(mobileValidateFilter,UsernamePasswordAuthenticationFilter.class)
+                // 添加过滤器   图形验证码过滤器 在 用户请求 认证之前
                 .addFilterBefore(imageCodeValidateFilter, UsernamePasswordAuthenticationFilter.class)
                 //采用 formLogin 表单登录 认证方式
                 .formLogin()
@@ -109,7 +118,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //认证请求
                 .authorizeRequests()
                 //在 认证所有请求之前放行登录页面请求
-                .mvcMatchers(security.getAuthentication().getLoginPage(),"/code/image").permitAll()
+                .mvcMatchers(security.getAuthentication().getLoginPage()
+                        ,"/code/image", "/mobile/page", "/code/mobile").permitAll()
                 //所有访问该应用的http 请求都要进行身份认证成功后才能访问
                 .anyRequest().authenticated()
                 .and()
@@ -120,6 +130,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //记录信息保存时时长 一天
                 .tokenValiditySeconds(60*60*24*1)
         ;
+        //将手机认证添加到过滤器链上
+        http.apply(mobileAuthenticationConfig);
     }
 
     /**

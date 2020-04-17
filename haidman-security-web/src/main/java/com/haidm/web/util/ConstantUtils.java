@@ -10,4 +10,5 @@ public class ConstantUtils {
      * 图形验证码
      */
     public static final String SESSION_KEY_IMAGE_CODE =  "SESSION_KEY_IMAGE_CODE";
+    public static final String SESSION_KEY_MOBILE_CODE =  "SESSION_KEY_MOBILE_CODE";
 }

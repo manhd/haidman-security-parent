@@ -17,25 +17,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 校验 用户输入的手机验证码是否正确
  * @author shs-xxaqbzymhd
  */
 @Component
-public class ImageCodeValidateFilter extends OncePerRequestFilter {
-
-    @Autowired
-    private  SecurityProperites securityProperites;
+public class MobileValidateFilter extends OncePerRequestFilter {
 
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
         HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //1. 校验登录请求的验证码是否正确
-        if(request.getRequestURI()
-                .equals(securityProperites.getAuthentication().getLoginProcessingUrl())
-        && request.getMethod().equalsIgnoreCase("post")){
+        // 1. 判断请求是否为为手机登录，并且是  post 请求
+        if("/mobile/form".equals(request.getRequestURI())
+                && "post".equalsIgnoreCase(request.getMethod())){
             try {
                 //校验验证码合法性
                 validateCode(request);
@@ -51,7 +47,7 @@ public class ImageCodeValidateFilter extends OncePerRequestFilter {
 
     private void validateCode(HttpServletRequest request) {
         String sessionCode = (String)request.getSession()
-                .getAttribute(ConstantUtils.SESSION_KEY_IMAGE_CODE);
+                .getAttribute(ConstantUtils.SESSION_KEY_MOBILE_CODE);
         //获取用户输入的验证码
         String  code = (String) request.getParameter("code");
         if(StringUtils.isBlank(code)){
