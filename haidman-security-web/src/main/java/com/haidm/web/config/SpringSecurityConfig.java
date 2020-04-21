@@ -3,6 +3,7 @@ package com.haidm.web.config;
 import com.haidm.web.authentication.code.ImageCodeValidateFilter;
 import com.haidm.web.authentication.code.MobileValidateFilter;
 import com.haidm.web.properites.SecurityProperites;
+import com.haidm.web.authentication.service.impl.CustomUserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +58,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private CustomUserDetailsServiceImpl customUserDetailsService;
+
 
     /**
      * 记住我功能
@@ -81,12 +85,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         //密码加密
-        String  password = passwordEncoder().encode("123123");
+       /* String  password = passwordEncoder().encode("123123");
         //密码存储需要加密
         auth.inMemoryAuthentication()
                 .withUser("root")
                 .password(password)
-                .authorities("admin");
+                .authorities("admin");*/
+       auth.userDetailsService(customUserDetailsService);
     }
 
     /**
@@ -118,8 +123,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //认证请求
                 .authorizeRequests()
                 //在 认证所有请求之前放行登录页面请求
-                .mvcMatchers(security.getAuthentication().getLoginPage()
-                        ,"/code/image", "/mobile/page", "/code/mobile").permitAll()
+                .mvcMatchers(security.getAuthentication().getLoginPage(),
+                        /*,"/code/image", "/mobile/page", "/code/mobile"*/
+                        security.getAuthentication().getImageCodeUrl(),
+                        security.getAuthentication().getMobileCodeUrl(),
+                        security.getAuthentication().getMobilePageUrl()
+
+                ).permitAll()
                 //所有访问该应用的http 请求都要进行身份认证成功后才能访问
                 .anyRequest().authenticated()
                 .and()
@@ -128,7 +138,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //保存登录信息
                 .tokenRepository(jdbcTokenRepository())
                 //记录信息保存时时长 一天
-                .tokenValiditySeconds(60*60*24*1)
+                .tokenValiditySeconds(security.getAuthentication().getTokenValiditySeconds())
         ;
         //将手机认证添加到过滤器链上
         http.apply(mobileAuthenticationConfig);

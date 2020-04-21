@@ -5,6 +5,8 @@ import com.haidm.web.common.response.BaseRespose;
 import com.haidm.web.common.response.ResponseEnum;
 import com.haidm.web.common.response.ResponseUtils;
 import com.haidm.web.properites.SecurityProperites;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Slf4j
 //public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
@@ -38,7 +41,12 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(result.toJsonString());
         }else {
-            super.setDefaultFailureUrl(securityProperites.getAuthentication().getLoginPage() + "?error");
+//            super.setDefaultFailureUrl(securityProperites.getAuthentication().getLoginPage() + "?error");
+            //获取上一次的请求路径
+            String referer = request.getHeader("Referer");
+            String lastUrl = StringUtils.substringBefore(referer, "?");
+            log.info("---------上一次请求路径【Referer:{}】,【lastUrl:{}】--------------------",referer,lastUrl);
+            super.setDefaultFailureUrl(lastUrl+"?error");
             super.onAuthenticationFailure(request, response, e);
         }
 

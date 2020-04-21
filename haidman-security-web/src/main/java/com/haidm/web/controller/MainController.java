@@ -4,6 +4,10 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.haidm.web.util.ConstantUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author shs-xxaqbzymhd
@@ -29,8 +34,15 @@ public class MainController {
 
 
     @RequestMapping({"index","/",""})
-    public String index(){
+    public String index(Map map){
         log.info("-----------访问首页----------------");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(null != principal && principal instanceof UserDetails){
+            UserDetails userDetails = (UserDetails) principal;
+            String username = userDetails.getUsername();
+            map.put("userName", username);
+        }
+
         return "index";
     }
 

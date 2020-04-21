@@ -33,7 +33,7 @@ public class MobileDetailsServiceImpl implements UserDetailsService {
         //2. 如果用户信息存在，获取权限资源
 
         // 封装用户信息
-        return new User(mobile,"",true,
+        return new User("root","",true,
                 true, true,
                 true, AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
     }

@@ -21,3 +21,8 @@ haidman:
         - /modules/**
         - /plugins/**
       loginType: REDIRECT #请求认证成功后响应类型
+#      "/code/image", "/mobile/page", "/code/mobile"
+      imageCodeUrl: /code/image #获取图形验证码url
+      mobileCodeUrl: /code/mobile #获取手机验证码url
+      mobilePageUrl: /mobile/page #跳转手机登录页面url
+      tokenValiditySeconds: 259200 # 记住我功能 时常 3 天  60*60*24*3
