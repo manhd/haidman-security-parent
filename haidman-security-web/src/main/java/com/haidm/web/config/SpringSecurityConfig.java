@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
 import javax.sql.DataSource;
 
@@ -60,6 +62,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsServiceImpl customUserDetailsService;
+
+    /**
+     * 会话超时处理
+     */
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
+
+    /**
+     * 当用户超多设定数量的实现类
+     */
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+
 
 
     /**
@@ -139,6 +155,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(jdbcTokenRepository())
                 //记录信息保存时时长 一天
                 .tokenValiditySeconds(security.getAuthentication().getTokenValiditySeconds())
+                .and()
+                //session 管理
+                .sessionManagement()
+                //当session 失效后的处理类
+                .invalidSessionStrategy(invalidSessionStrategy)
+                //每个用户在系统中最多可以生成几个session
+                .maximumSessions(1)
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                //当一个用户session 达到最大值，则不允许继续登录
+                .maxSessionsPreventsLogin(true)
+                //关闭csrf 跨站请求
+                .and().and().csrf().disable()
         ;
         //将手机认证添加到过滤器链上
         http.apply(mobileAuthenticationConfig);

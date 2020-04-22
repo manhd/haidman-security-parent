@@ -1,10 +1,14 @@
 package com.haidm.web.config;
 
+import com.haidm.web.authentication.session.CustomInvalidSessionStrategy;
+import com.haidm.web.authentication.session.CustomSessionInformationExpiredStrategy;
 import com.haidm.web.mobile.ISmsSend;
 import com.haidm.web.mobile.impl.SmsCodeSender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
 /**
  * 主要为容器中添加 bean 实例
@@ -12,6 +16,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SecurityBeanConfig {
+
+
+    /**
+     * 多端登录session 处理
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(CustomSessionInformationExpiredStrategy.class)
+    public SessionInformationExpiredStrategy sessionInformationExpiredStrategy(){
+        return new CustomSessionInformationExpiredStrategy();
+    }
 
     /**
      * @ConditionalOnMissingBean(ISmsSend.class)
@@ -24,5 +39,16 @@ public class SecurityBeanConfig {
     @ConditionalOnMissingBean(ISmsSend.class)
     public ISmsSend iSmsSend(){
         return new SmsCodeSender();
+    }
+
+
+    /**
+     * 当session 失效后的处理类
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(CustomInvalidSessionStrategy.class)
+    public InvalidSessionStrategy invalidSessionStrategy(){
+        return new CustomInvalidSessionStrategy();
     }
 }

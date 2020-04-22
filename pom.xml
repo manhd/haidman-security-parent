@@ -33,6 +33,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-io.version>2.6</commons-io.version>
+        <findbugs.version>3.0.1</findbugs.version>
         <!-- 定义版本号, 子模块直接引用-->
         <haidman-security.version>1.0-SNAPSHOT</haidman-security.version>
     </properties>
@@ -62,6 +63,12 @@
                 <groupId>com.github.penggle</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${findbugs.version}</version>
             </dependency>
 
             <!-- 工具类依赖 -->
